@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8"/>
@@ -187,6 +187,7 @@ body{font-family:var(--fs);background:#d5e5dc;min-height:100vh;}
 <div id="bar">
   <span class="lbl">✦ Editor — Steven &amp; Génesis</span>
   <button class="bb" onclick="abrirPanel()">✏️ Editar datos</button>
+  <button class="bb" onclick="verLista()">📋 Lista asistencia</button>
   <button class="bb ac" onclick="generarFinal()">⬇ Generar invitación final</button>
   <button class="bb" onclick="window.print()">🖨️ PDF</button>
 </div>
@@ -225,9 +226,9 @@ body{font-family:var(--fs);background:#d5e5dc;min-height:100vh;}
     <div class="slbl">— Save the Date —</div>
     <div class="flr">✦ ❧ ✦</div>
     <div class="noms">
-      <span class="nm" id="vNovio">Steven</span>
+      <span class="nm" id="vNovio">Génesis</span>
       <span class="amp">&amp;</span>
-      <span class="nm" id="vNovia">Génesis</span>
+      <span class="nm" id="vNovia">Steven</span>
     </div>
     <div class="div"></div>
     <div class="fr">
@@ -244,7 +245,7 @@ body{font-family:var(--fs);background:#d5e5dc;min-height:100vh;}
     <div class="gs" id="vAdm">2 personas</div>
     <div class="dets">
       <div class="dr">📍 <span id="vDir">Km 38 vía a la Costa, Guayaquil · Ecuador</span></div>
-      <div class="dr">🕑 <span>Puertas abren a la 1:30 PM · Ceremonia 2:00 PM</span></div>
+      <div class="dr">🕑 <span>Puertas abren a las 2:00 PM · Ceremonia 2:30 PM</span></div>
       <div class="dr">🌿 <span>Ceremonia en el jardín · Recepción en la hacienda</span></div>
     </div>
   </div>
@@ -254,8 +255,8 @@ body{font-family:var(--fs);background:#d5e5dc;min-height:100vh;}
     <div class="dcb">
       <div class="slb">Dresscode</div>
       <div class="dct" id="vDct">Formal · Jardín de tarde</div>
-      <div class="dch" id="vDch"><strong>Damas:</strong> Vestido largo o midi elegante<br><strong>Caballeros:</strong> Traje formal<br>Se agradece vestir acorde a la celebración.</div>
-      <span class="dce">✦ Evitar blanco</span>
+      <div class="dch" id="vDch"><strong>Damas:</strong> Vestido largo o midi elegante<br><strong>Caballeros:</strong> Traje formal<br>Preferencia colores pasteles.</div>
+      <span class="dce">✦ EVITAR BLANCO</span>
     </div>
     <div class="dci">👗🤵</div>
   </div>
@@ -295,12 +296,13 @@ body{font-family:var(--fs);background:#d5e5dc;min-height:100vh;}
     <p class="rm" id="vRegalo">Si deseas obsequiarnos algo especial, con todo el amor de nuestros corazones aceptamos una contribución a nuestro viaje juntos — el más hermoso regalo es ayudarnos a construir este nuevo comienzo de vida.</p>
     <div class="bc">
       <div class="be">Datos para transferencia</div>
-      <div class="bn" id="vBanco">Banco del Pacífico</div>
+      <div class="bn" id="vBanco">Banco Pichincha</div>
       <div class="brow">
         <span class="bt" id="vTipo">Cta. Ahorros</span>
-        <span class="bnum" id="vCuenta">1044189265</span>
+        <span class="bnum" id="vCuenta">2203555941</span>
       </div>
-      <div class="bti" id="vTitular">A nombre de: Steven Farfán Cruel</div>
+      <div class="bti" id="vTitular">A nombre de: Génesis Guerrero Cabrera</div>
+      <div class="bti" id="vCedula">Cédula: 0931721815</div>
       <button class="cpb" onclick="copiarCuenta()">Copiar número de cuenta</button>
     </div>
   </div>
@@ -368,6 +370,27 @@ body{font-family:var(--fs);background:#d5e5dc;min-height:100vh;}
   </div>
 </div>
 
+<!-- MODAL LISTA ASISTENCIA -->
+<div class="mov" id="mLista" onclick="if(event.target===this)this.classList.remove('op')">
+  <div class="mb" style="max-width:520px;text-align:left;">
+    <div class="mi" style="text-align:center;">📋</div>
+    <div class="mtt" style="text-align:center;">Lista de Asistencia</div>
+    <div style="display:flex;gap:12px;margin:10px 0;font-family:var(--fs);font-size:11px;justify-content:center;">
+      <span id="cntSi" style="color:#375a6e;font-weight:500;">✅ 0 confirman</span>
+      <span style="color:#cdddd5;">|</span>
+      <span id="cntNo" style="color:#6b7f74;">❌ 0 no asisten</span>
+      <span style="color:#cdddd5;">|</span>
+      <span id="cntTotal" style="color:#6b9caa;">Total: 0</span>
+    </div>
+    <div id="lista-tabla" style="max-height:320px;overflow-y:auto;border:1px solid var(--bo);border-radius:4px;margin-bottom:12px;"></div>
+    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+      <button class="mbtn" onclick="exportarLista()">📥 Exportar CSV</button>
+      <button class="mbtn" style="background:#c0392b;" onclick="if(confirm('¿Borrar toda la lista?')){localStorage.removeItem(\'boda_lista\');verLista();}">🗑 Limpiar</button>
+      <button class="mbtn2" onclick="document.getElementById('mLista').classList.remove('op')">Cerrar</button>
+    </div>
+  </div>
+</div>
+
 <!-- PANEL EDICIÓN -->
 <div class="epov" id="epOv" onclick="if(event.target===this)this.classList.remove('op')">
   <div class="epb">
@@ -398,6 +421,7 @@ body{font-family:var(--fs);background:#d5e5dc;min-height:100vh;}
       <div><label class="epl">Número de cuenta</label><input class="epi" id="fCuenta"/></div>
       <div><label class="epl">Tipo de cuenta</label><input class="epi" id="fTipo"/></div>
       <div><label class="epl">Titular</label><input class="epi" id="fTitular"/></div>
+      <div class="epf"><label class="epl">Cédula del titular</label><input class="epi" id="fCedula"/></div>
 
       <span class="eps epf">CONFIRMACIÓN</span>
       <div><label class="epl">Confirmar hasta</label><input class="epi" id="fDeadline"/></div>
@@ -416,15 +440,15 @@ body{font-family:var(--fs);background:#d5e5dc;min-height:100vh;}
 <script>
 // ══ ESTADO ═══════════════════════════════════════════════════
 var D = {
-  novio:'Steven', novia:'Génesis',
+  novio:'Génesis', novia:'Steven',
   fecha:'24 de Octubre · 2026', hora:'2:00 PM', lugar:'Hacienda Nina',
   dir:'Km 38 vía a la Costa, Guayaquil · Ecuador',
   inv:'Nombre del Invitado', adm:'2 personas',
   dct:'Formal · Jardín de tarde',
-  dch:'<strong>Damas:</strong> Vestido largo o midi elegante<br><strong>Caballeros:</strong> Traje formal<br>Se agradece vestir acorde a la celebración.',
+  dch:'<strong>Damas:</strong> Vestido largo o midi elegante<br><strong>Caballeros:</strong> Traje formal<br>Preferencia colores pasteles.',
   regalo:'Si deseas obsequiarnos algo especial, con todo el amor de nuestros corazones aceptamos una contribución a nuestro viaje juntos — el más hermoso regalo es ayudarnos a construir este nuevo comienzo de vida.',
-  banco:'Banco del Pacífico', cuenta:'1044189265', tipo:'Cta. Ahorros',
-  titular:'Steven Farfán Cruel',
+  banco:'Banco Pichincha', cuenta:'2203555941', tipo:'Cta. Ahorros',
+  titular:'Génesis Guerrero Cabrera', cedula:'0931721815',
   deadline:'24 de agosto de 2026', tel:'+593 99 286 4268'
 };
 var S = {}; // estado activo
@@ -472,6 +496,7 @@ function render(){
   txt('vRegalo',S.regalo);
   txt('vBanco',S.banco); txt('vCuenta',S.cuenta); txt('vTipo',S.tipo);
   txt('vTitular','A nombre de: '+S.titular);
+  if(document.getElementById('vCedula')) txt('vCedula','Cédula: '+(S.cedula||''));
   txt('vDeadline',S.deadline); txt('vTel',S.tel);
 }
 function txt(id,v){ var e=document.getElementById(id); if(e) e.textContent=v; }
@@ -484,7 +509,7 @@ function abrirPanel(){
   fv('fDct',S.dct);     fv('fDch',S.dch);
   fv('fRegalo',S.regalo);
   fv('fBanco',S.banco); fv('fCuenta',S.cuenta); fv('fTipo',S.tipo);
-  fv('fTitular',S.titular);
+  fv('fTitular',S.titular); fv('fCedula',S.cedula||'');
   fv('fDeadline',S.deadline); fv('fTel',S.tel);
   document.getElementById('epOv').classList.add('op');
 }
@@ -499,7 +524,7 @@ function guardar(){
   S.dct=gv('fDct');     S.dch=gv('fDch');
   S.regalo=gv('fRegalo');
   S.banco=gv('fBanco'); S.cuenta=gv('fCuenta'); S.tipo=gv('fTipo');
-  S.titular=gv('fTitular');
+  S.titular=gv('fTitular'); S.cedula=gv('fCedula');
   S.deadline=gv('fDeadline'); S.tel=gv('fTel');
   guardarLS();
   render();
@@ -551,32 +576,28 @@ function zm(dz){ps=Math.max(0.5,Math.min(3,ps+dz));applyT();}
 function actualizarCalendario(){
   var titulo=encodeURIComponent('Boda de '+S.novio+' & '+S.novia);
   var loc=encodeURIComponent(S.lugar+' · '+S.dir);
-  var desc=encodeURIComponent('¡Nos casamos! '+S.fecha+' a las '+S.hora);
-  // Fecha: "24 de Octubre · 2026" → 20261024
+  var desc=encodeURIComponent('¡Nos casamos! '+S.fecha+' a las 2:00 PM. Ceremonia 2:30 PM');
   var d=parseFecha(S.fecha);
-  var inicio=d+'T140000'; var fin=d+'T230000'; // 2pm-11pm
-  // Google
+  var inicio=d+'T140000'; var fin=d+'T230000';
   document.getElementById('cal-google').href=
     'https://www.google.com/calendar/render?action=TEMPLATE&text='+titulo+
-    '&dates='+inicio+'Z/'+fin+'Z&details='+desc+'&location='+loc;
-  // Outlook
+    '&dates='+inicio+'/'+fin+'&details='+desc+'&location='+loc;
   document.getElementById('cal-outlook').href=
     'https://outlook.live.com/calendar/0/deeplink/compose?subject='+titulo+
     '&startdt='+d.slice(0,4)+'-'+d.slice(4,6)+'-'+d.slice(6,8)+'T14:00:00&enddt='+
     d.slice(0,4)+'-'+d.slice(4,6)+'-'+d.slice(6,8)+'T23:00:00&body='+desc+'&location='+loc;
-  // ICS
   var ics=[
-    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Boda//ES',
+    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Boda Genesis Steven//ES',
     'BEGIN:VEVENT',
-    'DTSTART:'+inicio+'Z','DTEND:'+fin+'Z',
+    'DTSTART:'+d+'T140000','DTEND:'+d+'T230000',
     'SUMMARY:Boda de '+S.novio+' & '+S.novia,
-    'DESCRIPTION:'+S.fecha+' a las '+S.hora,
+    'DESCRIPTION:Puertas abren a las 2:00 PM. Ceremonia 2:30 PM',
     'LOCATION:'+S.lugar+' · '+S.dir,
     'END:VEVENT','END:VCALENDAR'
   ].join('\r\n');
   var blob=new Blob([ics],{type:'text/calendar'});
   document.getElementById('cal-ics').href=URL.createObjectURL(blob);
-  document.getElementById('cal-ics').download='boda-'+S.novio.toLowerCase()+'-'+S.novia.toLowerCase()+'.ics';
+  document.getElementById('cal-ics').download='boda-genesis-steven.ics';
 }
 function parseFecha(str){
   var meses={'enero':'01','febrero':'02','marzo':'03','abril':'04','mayo':'05','junio':'06',
@@ -592,15 +613,31 @@ function parseFecha(str){
   return (anio||'2026')+(mes||'10')+(dia||'24');
 }
 
-// ══ CONFIRMAR ════════════════════════════════════════════════
+// ══ LISTA DE ASISTENCIA ═══════════════════════════════════════
+function registrarAsistencia(nombre, asiste){
+  var lista = JSON.parse(localStorage.getItem('boda_lista')||'[]');
+  // Evitar duplicados del mismo invitado
+  lista = lista.filter(function(r){ return r.nombre !== nombre; });
+  lista.push({
+    nombre: nombre,
+    respuesta: asiste ? 'Asistirá' : 'No asistirá',
+    emoji: asiste ? '✅' : '❌',
+    fecha: new Date().toLocaleDateString('es-EC',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})
+  });
+  localStorage.setItem('boda_lista', JSON.stringify(lista));
+}
+
+// ══ CONFIRMAR → WHATSAPP ══════════════════════════════════════
 function confirmar(a){
-  var n=S.inv.split(' ')[0];
-  document.getElementById('mIco').textContent= a?'🌿🥂':'💛';
-  document.getElementById('mTit').textContent= a?'¡Qué alegría, '+n+'!':'Qué pena, '+n;
-  document.getElementById('mBod').textContent= a
-    ?'Nos llena el corazón saber que estarás con nosotros. Te esperamos el '+S.fecha+' en '+S.lugar+'. ¡Será una noche maravillosa!'
-    :'Lamentamos no poder tenerte con nosotros, pero guardaremos un lugar especial en nuestros corazones ese día tan importante.';
-  document.getElementById('mConf').classList.add('op');
+  var nombre = S.inv || 'Invitado';
+  registrarAsistencia(nombre, a);
+  var tel = '593992864268';
+  var msg = a
+    ? 'Hola!, confirmo con gusto mi asistencia a la boda del 24 de octubre de 2026, en la hacienda NINA ¡Nos vemos allá!🌿🥂'
+    : 'Hola! Lamentablemente no podré asistir a la boda del 24 de octubre de 2026 en la Hacienda NINA. Les deseamos todo lo mejor en ese día tan especial. ¡Un fuerte abrazo! 💛';
+  var url = 'https://wa.me/'+tel+'?text='+encodeURIComponent(msg);
+  window.open(url, '_blank');
+  toast(a ? '✓ ¡Gracias por confirmar! Abriendo WhatsApp...' : '✓ Respuesta registrada. Abriendo WhatsApp...');
 }
 
 // ══ COPIAR CUENTA ════════════════════════════════════════════
@@ -830,6 +867,47 @@ function conf(a){
 }
 <\/script>
 </body></html>`;
+}
+
+// ══ LISTA DE ASISTENCIA ═══════════════════════════════════════
+function verLista(){
+  var lista=JSON.parse(localStorage.getItem('boda_lista')||'[]');
+  var si=lista.filter(function(r){return r.respuesta==='Asistirá';}).length;
+  var no=lista.length-si;
+  document.getElementById('cntSi').textContent='✅ '+si+' confirman';
+  document.getElementById('cntNo').textContent='❌ '+no+' no asisten';
+  document.getElementById('cntTotal').textContent='Total: '+lista.length;
+  var html='';
+  if(lista.length===0){
+    html='<div style="padding:20px;text-align:center;color:#6b7f74;font-size:12px;font-family:Jost,sans-serif;">Aún no hay respuestas registradas</div>';
+  } else {
+    html='<table style="width:100%;border-collapse:collapse;font-family:Jost,sans-serif;font-size:12px;">';
+    html+='<thead><tr style="background:#f0f9f3;"><th style="padding:8px 10px;text-align:left;color:#375a6e;font-size:9px;letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid #cdddd5;">Invitado</th><th style="padding:8px 10px;text-align:left;color:#375a6e;font-size:9px;letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid #cdddd5;">Respuesta</th><th style="padding:8px 10px;text-align:left;color:#375a6e;font-size:9px;letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid #cdddd5;">Fecha</th></tr></thead><tbody>';
+    lista.slice().reverse().forEach(function(r){
+      var color=r.respuesta==='Asistirá'?'#e8f5e9':'#fce4ec';
+      html+='<tr style="background:'+color+';border-bottom:1px solid #e0e0e0;">';
+      html+='<td style="padding:8px 10px;font-weight:500;color:#2c3e30;">'+r.emoji+' '+r.nombre+'</td>';
+      html+='<td style="padding:8px 10px;color:#375a6e;">'+r.respuesta+'</td>';
+      html+='<td style="padding:8px 10px;color:#6b7f74;font-size:10px;">'+r.fecha+'</td>';
+      html+='</tr>';
+    });
+    html+='</tbody></table>';
+  }
+  document.getElementById('lista-tabla').innerHTML=html;
+  document.getElementById('mLista').classList.add('op');
+}
+
+function exportarLista(){
+  var lista=JSON.parse(localStorage.getItem('boda_lista')||'[]');
+  if(lista.length===0){toast('No hay datos para exportar');return;}
+  var csv='Nombre,Respuesta,Fecha\n';
+  lista.forEach(function(r){ csv+='"'+r.nombre+'","'+r.respuesta+'","'+r.fecha+'"\n'; });
+  var blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='asistencia-boda-genesis-steven.csv';
+  a.click();
+  toast('✓ Lista exportada');
 }
 
 // ══ TOAST ════════════════════════════════════════════════════
